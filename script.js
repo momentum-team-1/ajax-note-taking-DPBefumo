@@ -68,9 +68,11 @@ function deleteNoteItem (itemId) {
     })
 }
 
-function editNoteItem (itemId) {
-    let editNote = document.querySelector(`li[data-id='${itemId}']`)
-    fetch(`http://localhost:3000/notes/${itemId}`, {
-        method: 'PATCH'
-    })
-}
+// Needs to be edited!!!!
+
+// function editNoteItem (itemId) {
+//     let editNote = document.querySelector(`li[data-id='${itemId}']`)
+//     fetch(`http://localhost:3000/notes/${itemId}`, {
+//         method: 'PATCH'
+//     })
+// }
