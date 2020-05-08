@@ -1,6 +1,5 @@
 const noteForm = document.querySelector('#note-form')
 
-//1. add event listener for form submission to listen to submit event
 noteForm.addEventListener('submit', function(event){
     event.preventDefault()
     const noteTextInput = document.querySelector('#note-text')
@@ -8,21 +7,15 @@ noteForm.addEventListener('submit', function(event){
     noteTextInput.value = ''
     createNewNote(noteText)
 })
-//console.log to check
-//may need preventDefult() because of autorefresh 
-//have a way to input text in form
-//add in function to grab text --> createNewItem(name of argument)
 
-//2. write the fetch request to post data, in its own function
-//function createNewItem(same sas argument on line 8)
-//fetch('http://localhost:3000/notes', {
-    // method: 'POST',
-    // headers: {}
-    //body: JSON.stringify {}
-// })
-//.then(response => response.json())
-//.then(data => consol.log(data))
-
+function createNewNote(noteText) {
+    fetch('http://localhost:3000/notes', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify ({item: noteText, created: moment().format()})
+    })
+    .then(response => response.json())
+}
 //3. render the list using the data that is now on the server
 //function doSomething(){
 //fetch('link', {
