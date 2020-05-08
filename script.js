@@ -18,7 +18,7 @@ function createNewNote(noteText) {
     .then(response => response.json())
     .then(() => renderNotes())
 }
-//3. render the list using the data that is now on the server
+
 function renderNotes() {
     noteList.innerHTML = ''
     fetch('http://localhost:3000/notes', {
@@ -30,31 +30,47 @@ function renderNotes() {
             list.id = 'note-list'
             for (let note of notes) {
                 let listItem = document.createElement('li')
+                listItem.classList.add('mar-md')
                 listItem.dataset.id = note.id
                 listItem.innerText = note.item
-                let editIcon = document.createElement('span')
+                let editIcon = document.createElement('button')
                 editIcon.id = 'edit'
-                editIcon.classList.add ('fas', 'fa-pen-square')
+                editIcon.classList.add ('fa', 'fa-edit', 'mar-l-xs')
                 listItem.appendChild(editIcon)
-                let deleteIcon = document.createElement('span')
+                let deleteIcon = document.createElement('button')
                 deleteIcon.id = 'delete'
-                deleteIcon.classList.add('fas', 'fa-trash')
+                deleteIcon.classList.add('fa', 'fa-trash', 'mar-l-xs')
                 listItem.appendChild(deleteIcon)
                 list.appendChild(listItem)
             }
         noteList.appendChild(list)
     })
 }
-    //add the content to the DOM
-    //how do i want to add it?
-    //let item = document.createElement('whatever')
-    //for (let da of data) {
-        // let listItem = document.createElement('whatever')
-        //give it an id
-        //add innerText
-        //appendChild
-    // }
-    //identify a variable to querySelector to where i want this stuff to go
-    //appendchild to that variable 
 
-//doSomething()
+noteList.addEventListener('click', function (event) {
+    let targetEl = event.target
+    if (targetEl.matches('#edit')) {
+        console.log('edit')
+        editNoteItem(targetEl.parentElement.dataset.id)
+    } else if (targetEl.matches('#delete')){
+        console.log('delete')
+        deleteNoteItem(targetEl.parentElement.dataset.id)
+    }
+})
+
+function deleteNoteItem (itemId) {
+    let deleteNote = document.querySelector(`li[data-id='${itemId}']`)
+    fetch(`http://localhost:3000/notes/${itemId}`, {
+        method: 'DELETE'
+    })
+    .then(function() {
+        document.querySelector('#note-list').removeChild(deleteNote)
+    })
+}
+
+function editNoteItem (itemId) {
+    let editNote = document.querySelector(`li[data-id='${itemId}']`)
+    fetch(`http://localhost:3000/notes/${itemId}`, {
+        method: 'PATCH'
+    })
+}
