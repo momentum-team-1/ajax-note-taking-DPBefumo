@@ -3,17 +3,21 @@ const noteList = document.querySelector('#notes')
 
 noteForm.addEventListener('submit', function(event){
     event.preventDefault()
+    // const titleTextInput = document.querySelector('#title-text')
+    // const titleText = titleTextInput.value
+    // titleTextInput.value = ''
+    // createNewNote(titleText)
     const noteTextInput = document.querySelector('#note-text')
     const noteText = noteTextInput.value
     noteTextInput.value = ''
-    createNewNote(noteText)
+    createNewNote(noteText)//titleText
 })
 
-function createNewNote(noteText) {
+function createNewNote(noteText) { //titleText
     fetch('http://localhost:3000/notes', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify ({item: noteText, created: moment().format()})
+        body: JSON.stringify ({item: noteText, created: moment().format()}) //title: titleText,
     })
     .then(response => response.json())
     .then(() => renderNotes())
@@ -26,10 +30,14 @@ function renderNotes() {
     })
         .then(response => response.json())
         .then(function (notes) {
-            const list = document.createElement('ul')
+            const list = document.createElement('div')
             list.id = 'note-list'
             for (let note of notes) {
-                let listItem = document.createElement('li')
+                // let titleItem = document.createElement('h5')
+                // titleItem.classList.add('mar-xs')
+                // titleItem.dataset.id = title.id
+                // titleItem.innerText = title.item
+                let listItem = document.createElement('p')
                 listItem.classList.add('mar-md')
                 listItem.dataset.id = note.id
                 listItem.innerText = note.item
@@ -41,6 +49,7 @@ function renderNotes() {
                 deleteIcon.id = 'delete'
                 deleteIcon.classList.add('fa', 'fa-trash', 'mar-l-xs')
                 listItem.appendChild(deleteIcon)
+                // list.appendChild(titleItem)
                 list.appendChild(listItem)
             }
         noteList.appendChild(list)
@@ -59,7 +68,7 @@ noteList.addEventListener('click', function (event) {
 })
 
 function deleteNoteItem (itemId) {
-    let deleteNote = document.querySelector(`li[data-id='${itemId}']`)
+    let deleteNote = document.querySelector(`p[data-id='${itemId}']`)
     fetch(`http://localhost:3000/notes/${itemId}`, {
         method: 'DELETE'
     })
@@ -67,8 +76,6 @@ function deleteNoteItem (itemId) {
         document.querySelector('#note-list').removeChild(deleteNote)
     })
 }
-
-// Needs to be edited!!!!
 
 // function editNoteItem (itemId) {
 //     let editNote = document.querySelector(`li[data-id='${itemId}']`)
