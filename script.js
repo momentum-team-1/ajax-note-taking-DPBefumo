@@ -67,6 +67,17 @@ noteList.addEventListener('click', function (event) {
     }
 })
 
+function editNoteItem (noteItem, itemId) {
+    let editNote = document.querySelector(`p[data-id='${itemId}']`)
+    fetch(`http://localhost:3000/notes/${itemId}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({item: noteItem.noteText})
+    })
+    .then(response => response.json())
+    .then(()=> editNote.reset())
+}
+
 function deleteNoteItem (itemId) {
     let deleteNote = document.querySelector(`p[data-id='${itemId}']`)
     fetch(`http://localhost:3000/notes/${itemId}`, {
@@ -76,10 +87,3 @@ function deleteNoteItem (itemId) {
         document.querySelector('#note-list').removeChild(deleteNote)
     })
 }
-
-// function editNoteItem (itemId) {
-//     let editNote = document.querySelector(`li[data-id='${itemId}']`)
-//     fetch(`http://localhost:3000/notes/${itemId}`, {
-//         method: 'PATCH'
-//     })
-// }
