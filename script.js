@@ -58,11 +58,10 @@ function renderNotes() {
 
 noteList.addEventListener('click', function (event) {
     let targetEl = event.target
+    let noteItem = document.querySelector('#note-text')
     if (targetEl.matches('#edit')) {
-        console.log('edit')
-        editNoteItem(targetEl.parentElement.dataset.id)
+        editNoteItem(noteItem.dataset.id, targetEl.parentElement.dataset.id)
     } else if (targetEl.matches('#delete')){
-        console.log('delete')
         deleteNoteItem(targetEl.parentElement.dataset.id)
     }
 })
@@ -72,10 +71,8 @@ function editNoteItem (noteItem, itemId) {
     fetch(`http://localhost:3000/notes/${itemId}`, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({item: noteItem.noteText})
+        body: JSON.stringify({item: noteItem})
     })
-    .then(response => response.json())
-    .then(()=> editNote.reset())
 }
 
 function deleteNoteItem (itemId) {
